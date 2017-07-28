@@ -21,7 +21,6 @@ add-highlighter -group /ecmascript/comment       fill comment
 add-highlighter -group /ecmascript/literal       fill string
 add-highlighter -group /ecmascript/literal       regex \${.*?} 0:value
 
-add-highlighter -group /ecmascript/code regex \$\w* 0:variable
 add-highlighter -group /ecmascript/code regex \b(Infinity|NaN|false|null|this|true|undefined)\b 0:value
 add-highlighter -group /ecmascript/code regex "-?[0-9]*\.?[0-9]+" 0:value
 add-highlighter -group /ecmascript/code regex \b(Array|Boolean|Date|Function|JSON|Map|Math|Number|Object|Promise|Proxy|Reflect|RegExp|Set|String|Symbol|WeakMap|WeakSet)\b 0:type
