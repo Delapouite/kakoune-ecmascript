@@ -33,6 +33,7 @@ hook global WinSetOption filetype=ecmascript %{
 - [kakoune-flow](https://github.com/Delapouite/kakoune-flow)
 - [kakoune-typescript](https://github.com/atomrc/kakoune-typescript)
 - [kakoune-grasp](https://github.com/Delapouite/kakoune-grasp)
+- [kakoune-npm](https://github.com/Delapouite/kakoune-npm)
 
 ## Licence
 
