@@ -8,27 +8,29 @@ hook global BufCreate .*[.](js) %{
 # Highlighters
 # ‾‾‾‾‾‾‾‾‾‾‾‾
 
-add-highlighter -group / regions -default code ecmascript \
+add-highlighter shared/ regions -default code ecmascript \
     double_string '"'  (?<!\\)(\\\\)*"         '' \
     single_string "'"  (?<!\\)(\\\\)*'         '' \
     literal       "`"  (?<!\\)(\\\\)*`         '' \
     comment       //   '$'                     '' \
-    comment       /\*  \*/                     ''
+    comment       /\*  \*/                     '' \
+    jsx           '^\s+<' '$'                  ''
 
-add-highlighter -group /ecmascript/double_string fill string
-add-highlighter -group /ecmascript/single_string fill string
-add-highlighter -group /ecmascript/comment       fill comment
-add-highlighter -group /ecmascript/literal       fill string
-add-highlighter -group /ecmascript/literal       regex \${.*?} 0:value
+add-highlighter shared/ecmascript/double_string fill string
+add-highlighter shared/ecmascript/single_string fill string
+add-highlighter shared/ecmascript/comment       fill comment
+add-highlighter shared/ecmascript/literal       fill string
+add-highlighter shared/ecmascript/literal       regex \$\{.*?\} 0:value
+add-highlighter shared/ecmascript/jsx           ref html
 
-add-highlighter -group /ecmascript/code regex \b(Infinity|NaN|false|null|this|true|undefined)\b 0:value
-add-highlighter -group /ecmascript/code regex "-?[0-9]*\.?[0-9]+" 0:value
-add-highlighter -group /ecmascript/code regex \b(Array|Boolean|Date|Function|JSON|Map|Math|Number|Object|Promise|Proxy|Reflect|RegExp|Set|String|Symbol|WeakMap|WeakSet)\b 0:type
-add-highlighter -group /ecmascript/code regex \b(Error|EvalError|InternalError|RangeError|ReferenceError|SyntaxError|TypeError|URIError)\b 0:type
+add-highlighter shared/ecmascript/code regex \b(Infinity|NaN|false|null|this|true|undefined)\b 0:value
+add-highlighter shared/ecmascript/code regex "-?[0-9]*\.?[0-9]+" 0:value
+add-highlighter shared/ecmascript/code regex \b(Array|Boolean|Date|Function|JSON|Map|Math|Number|Object|Promise|Proxy|Reflect|RegExp|Set|String|Symbol|WeakMap|WeakSet)\b 0:type
+add-highlighter shared/ecmascript/code regex \b(Error|EvalError|InternalError|RangeError|ReferenceError|SyntaxError|TypeError|URIError)\b 0:type
 
 # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords
-add-highlighter -group /ecmascript/code regex \b(async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|from|for|function|if|import|in|instanceof|let|new|of|return|super|switch|throw|try|typeof|var|void|while|with|yield)\b 0:keyword
-add-highlighter -group /ecmascript/code regex => 0:keyword
+add-highlighter shared/ecmascript/code regex \b(async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|from|for|function|if|import|in|instanceof|let|new|of|return|super|switch|throw|try|typeof|var|void|while|with|yield)\b 0:keyword
+add-highlighter shared/ecmascript/code regex => 0:keyword
 
 # Commands
 # ‾‾‾‾‾‾‾‾
@@ -61,7 +63,7 @@ def -hidden ecmascript-indent-on-new-line %<
 # Initialization
 # ‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
-hook -group ecmascript-highlight global WinSetOption filetype=ecmascript %{ add-highlighter ref ecmascript }
+hook -group ecmascript-highlight global WinSetOption filetype=ecmascript %{ add-highlighter window ref ecmascript }
 
 hook global WinSetOption filetype=ecmascript %{
     hook window InsertEnd  .* -group ecmascript-hooks  ecmascript-filter-around-selections
@@ -69,7 +71,7 @@ hook global WinSetOption filetype=ecmascript %{
     hook window InsertChar \n -group ecmascript-indent ecmascript-indent-on-new-line
 }
 
-hook -group ecmascript-highlight global WinSetOption filetype=(?!ecmascript).* %{ remove-highlighter ecmascript }
+hook -group ecmascript-highlight global WinSetOption filetype=(?!ecmascript).* %{ remove-highlighter window/ecmascript }
 
 hook global WinSetOption filetype=(?!ecmascript).* %{
     remove-hooks window ecmascript-indent
