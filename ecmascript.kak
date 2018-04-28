@@ -1,7 +1,7 @@
 # Detection
 # ‾‾‾‾‾‾‾‾‾
 
-hook global BufCreate .*[.](js) %{
+hook global BufCreate .*[.](js|mjs) %{
     set buffer filetype ecmascript
 }
 
